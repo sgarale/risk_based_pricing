@@ -3,7 +3,35 @@ import numpy as np
 from scipy.optimize import minimize
 
 def certain_iterations(x_levels, x_fine, option, step_nr, rho_theta, make_expect, bid=False):
+    """
+    Performs the iterations of the one-step pricing functional computing the optimal hedging strategy at each step. It works with linear expectations, hence without uncertainty.
 
+    Parameters:
+    ----------
+    x_levels : array-like
+        Discrete levels of the underlying for which the hedging strategy is computed.
+    x_fine : array-like
+        Fine-grained points for interpolating the hedging strategy.
+    option : object
+        EuropeanOption object with a `payoff` method, defining the payoff function.
+    step_nr : int
+        Number of steps in the time discretization.
+    rho_theta : object
+        An entropic risk measure providing `ct_loss` and `hedge_loss` methods to evaluate loss functions for the optimal strategy.
+    make_expect : callable
+        Function that returns an expectation object with an `expect` method to compute expected values.
+    bid : bool, optional
+        If True, performs the iterations for the bid price. Default is False.
+
+    Returns:
+    -------
+    I_t_dict : dict
+        Dictionary with keys as iteration steps and values as the computed `I_t` values at each step.
+    theta_dict : dict
+        Dictionary with keys as iteration steps and values as the computed optimal `theta` values at each step. The key 0 corresponds to the optimal theta for the renormalization term.
+    expect_dict : dict
+        Dictionary with keys as iteration steps and values as the expectation objects used in each iteration.
+    """
     mult = 1.
     if bid:
         mult = -1.
@@ -84,7 +112,35 @@ def certain_iterations(x_levels, x_fine, option, step_nr, rho_theta, make_expect
 
 
 def unc_iterations(x_levels, x_fine, option, step_nr, rho_theta, make_expect, bid=False):
+    """
+    Performs the iterations of the one-step pricing functional computing the optimal hedging strategy at each step. It works with sublinear expectations, hence with uncertainty.
 
+    Parameters:
+    ----------
+    x_levels : array-like
+        Discrete levels of the underlying for which the hedging strategy is computed.
+    x_fine : array-like
+        Fine-grained points for interpolating the hedging strategy.
+    option : object
+        EuropeanOption object with a `payoff` method, defining the payoff function.
+    step_nr : int
+        Number of steps in the time discretization.
+    rho_theta : object
+        An entropic risk measure providing `ct_loss` and `hedge_loss` methods to evaluate loss functions for the optimal strategy.
+    make_expect : callable
+        Function that returns an expectation object with an `expect` method to compute expected values.
+    bid : bool, optional
+        If True, performs the iterations for the bid price. Default is False.
+
+    Returns:
+    -------
+    I_t_dict : dict
+        Dictionary with keys as iteration steps and values as the computed `I_t` values at each step.
+    theta_dict : dict
+        Dictionary with keys as iteration steps and values as the computed optimal `theta` values at each step. The key 0 corresponds to the optimal theta for the renormalization term.
+    expect_dict : dict
+        Dictionary with keys as iteration steps and values as the expectation objects used in each iteration.
+    """
     mult = 1.
     if bid:
         mult = -1.

@@ -220,7 +220,29 @@ class sub_binomial_model:
 ########### risk measures ##############
 
 class RhoTheta:
+    """
+    Implements the robsut entropic risk measure with handling of risk aversion, time horizon and drift parameter. The nonlinear expectation is exogenous.
 
+    Attributes:
+    ----------
+    alpha : float
+        Risk aversion parameter.
+    m : float
+        Determinstic model.
+    t : float
+        The time parameter.
+
+    Methods:
+    -------
+    evaluate(theta, expectation, f, x)
+        Evaluates the robust entropic risk measure for a given nonlinear expectation `expectation`, a function `f`, and a strategy `theta`.
+    
+    ct_loss(theta, expectation)
+        Computes the loss for the renormalization term c_t. Used to optimize the strategy `theta`.
+    
+    hedge_loss(theta, expectation, f, x)
+        Loss associated to the function `f`, initial point `x`, and strategy `theta`. Used to optimize the strategy `theta`.
+    """
     def __init__(self, alpha, m, t) -> None:
         self.alpha = alpha
         self.m = m
@@ -243,7 +265,31 @@ class RhoTheta:
 
 
 class RhoThetaCertain:
+    """
+    Implements the entropic risk measure with handling of risk aversion, time horizon and drift parameter. The expectation is exogenous.
 
+    Attributes:
+    ----------
+    alpha : float
+        Risk aversion parameter.
+    m : float
+        Determinstic model.
+    t : float
+        The time parameter.
+    bid : bool
+        True if bid indifference price is required.
+
+    Methods:
+    -------
+    evaluate(theta, expectation, f, x)
+        Evaluates the entropic risk measure for a given expectation `expectation`, a function `f`, and a strategy `theta`.
+    
+    ct_loss(theta, expectation)
+        Computes the loss for the renormalization term c_t. Used to optimize the strategy `theta`.
+
+    hedge_loss(theta, expectation, f, x)
+        Loss associated to the function `f`, initial point `x`, and strategy `theta`. Used to optimize the strategy `theta`.
+    """
     def __init__(self, alpha, m, t, bid=False) -> None:
         self.alpha = alpha
         self.m = m
